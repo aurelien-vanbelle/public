@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Latence</title>
+    <link rel="stylesheet" href="static/style.css">
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+</head>
+
+<body>
+    <nav>
+        <h1>Latence</h1>
+        <button id="refresh-btn">Refresh</button>
+    </nav>
+    <main>
+        <div class="card">
+            <h2>Latence pour Cloudflare ({{ hostname }})</h2>
+            <h3 id="latency">{{ latency }} ms</h3>
+            <button id="ping-btn">Ping</button>
+        </div>
+        <div>
+            <form>
+                <input type="text" id="hostname-input">
+                <button id="ping-btn">Ping</button>
+            </form>
+        </div>
+    </main>
+</body>
+<script>
+    $(document).ready(function () {
+        // Récupération de l'url de base
+        var base_url = window.location.origin;
+
+        // Gestion de l'événement clic sur le bouton "Refresh"
+        $("#refresh-btn").click(function () {
+            location.reload();
+        });
+
+        // Gestion de l'événement clic sur le bouton "Ping"
+        $("#ping-btn").click(function () {
+            $.ajax({
+                type: "POST",
+                url: base_url + "/ping",
+                success: function (response) {
+                    var latency = response;
+                    $("#latency").text(latency + " ms");
+                }
+            });
+        });
+    });
+</script>
+
+</html>
